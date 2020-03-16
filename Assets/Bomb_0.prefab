@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 1516157938408889255}
   - component: {fileID: 1516157938408889252}
   - component: {fileID: 3441704187939242972}
-  - component: {fileID: 8969180805346581870}
   - component: {fileID: -438864434399430554}
+  - component: {fileID: 268347401}
   m_Layer: 9
   m_Name: Bomb_0
   m_TagString: Untagged
@@ -126,22 +126,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!58 &8969180805346581870
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1516157938408889253}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
 --- !u!114 &-438864434399430554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,12 +139,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minGroundNormalY: 0.65
-  gravityModifier: 6
-  maxFallSpeed: 35
+  gravityModifier: 5
+  maxFallSpeed: 20
   collideWith:
     serializedVersion: 2
     m_Bits: 257
   GroundFriction: 0.259
+  ignoreGravityTime: 0.2
   airDrag: 1
   bouncePower: 0.7
   tossDirection: {x: 0, y: 0}
@@ -171,3 +156,29 @@ MonoBehaviour:
   tileParticles: {fileID: 6743999184623060574, guid: 2e8d181ec5d119e49b1aab232b931003,
     type: 3}
   screenShakeDuration: 0.1
+--- !u!61 &268347401
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1516157938408889253}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.00000023841858, y: 0.004594922}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2, y: 2}
+    newSize: {x: 2, y: 2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.0077796, y: 0.99830985}
+  m_EdgeRadius: 0

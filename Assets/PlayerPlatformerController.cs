@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class PlayerPlatformerController : PhysicsObject
 {
-    public float maxSpeed = 2;
+    public float moveSpeed = 2;
     public float jumpTakeOffSpeed = 3;
     public float fallspeedIncrease = 1.5f;
     public float throwFreezeTime = 0.1f;
 
-    private Vector2 moveInput;
+    private Vector2 moveInput; // moveInput is literal player's input
+    private Vector2 externalForce; // used to give character's impulse by bomb
     public Vector2 MoveInput
     {
         get { return moveInput; }
     }
 
     private Vector3 _spawnPoint;
+    private float _timeCount;
 
     void Start()
     {
@@ -25,13 +27,14 @@ public class PlayerPlatformerController : PhysicsObject
 
     protected override void ComputeVelocity()
     {
+        _timeCount += Time.deltaTime;
         //player goes to spawn point if it's below the screen
         if (transform.position.y < -50)
             this.transform.position = _spawnPoint;
         
         // set up move variable;
         
-        moveInput.x = Input.GetAxisRaw("Horizontal");
+        moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
         // make player jump
         if (Input.GetButtonDown("Jump") && isGrounded)
@@ -56,18 +59,25 @@ public class PlayerPlatformerController : PhysicsObject
             velocity.y -= fallspeedIncrease;
         
         // set up player's movement velocity
-        this.targetVelocity = moveInput * maxSpeed;
+        if(Mathf.Abs(externalForce.x) > 0.1f)
+            this.targetVelocity.x = Mathf.Lerp(externalForce.x, moveInput.x * moveSpeed, _timeCount * 3);
+        else
+            this.targetVelocity.x = moveInput.x * moveSpeed;
     }
 
     IEnumerator TossFreeze()
     {
+        Vector2 tossInput = moveInput;
         Vector2 previousVelocity = velocity;
         Vector2 previousTargetVelocity = targetVelocity;
         rb2d.simulated = false;
         yield return new WaitForSeconds(throwFreezeTime);
         yield return null;
         rb2d.simulated = true;
-        velocity = previousVelocity.x * Vector2.right + jumpTakeOffSpeed/2 * Vector2.up;
+        velocity = Vector2.zero;
+        _timeCount = 0;
+        externalForce = -tossInput * jumpTakeOffSpeed / 1.5f;
+        this.velocity.y = externalForce.y;
         previousTargetVelocity = targetVelocity;
     }
 }

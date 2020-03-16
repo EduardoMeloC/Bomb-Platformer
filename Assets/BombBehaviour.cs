@@ -8,6 +8,7 @@ public class BombBehaviour : PhysicsObject
 {
     [Header("Physics")]
     [Range(0,1), SerializeField] private float GroundFriction = 0;
+    [SerializeField] private float ignoreGravityTime = 0;
     [SerializeField] private float airDrag = 1;
     [SerializeField] private float bouncePower = 0;
     [HideInInspector] public Vector2 tossDirection;
@@ -20,8 +21,11 @@ public class BombBehaviour : PhysicsObject
     [SerializeField] private float screenShakeDuration = 0.1f;
 
     private Vector2 _tossVelocity; // X velocity decreased over time;
+    private float _prevGravModifier; // previous gravity modifier
     private float _timeCount;
+    private int _bounceCount;
     private bool _exploded = false;
+    private bool _collided = false;
     private SpriteRenderer _spriteRenderer;
 
     private void Start()
@@ -31,18 +35,26 @@ public class BombBehaviour : PhysicsObject
         _timeCount = explosionTime;
         _spriteRenderer = this.GetComponent<SpriteRenderer>();
         _spriteRenderer.material = new Material(_spriteRenderer.material);
+        _prevGravModifier = gravityModifier;
     }
 
     protected override void ComputeVelocity()
     {
-        if(Input.GetKeyDown(KeyCode.Delete)) Destroy(this.gameObject);
         this.targetVelocity.x = _tossVelocity.x;
         _tossVelocity.x *= 1 - Time.deltaTime * airDrag;
         _tossVelocity.y = this.velocity.y;
 
-
-
         _timeCount -= Time.deltaTime;
+
+        if(_timeCount > explosionTime - ignoreGravityTime && !_collided)
+        {
+            this.gravityModifier = 0;
+        }
+        else{
+            this.gravityModifier = _prevGravModifier;
+        }
+
+        //making bomb sprite renderer white white
         if(_timeCount < 1 && !_exploded)
             _spriteRenderer.material.SetFloat("_FlashAmount", 1 - _timeCount);
         // after the time count, explode
@@ -78,9 +90,10 @@ public class BombBehaviour : PhysicsObject
 
     protected override void OnCollision(RaycastHit2D hit)
     {
-        // Horizontal Bounce
+        _collided = true;
+        // Horizontal Bounce (1/3 of vertical bounce power)
         if(1 - Mathf.Abs(hit.normal.x) <= 0.01){
-            _tossVelocity.x = -_tossVelocity.x * bouncePower;
+            _tossVelocity.x = -_tossVelocity.x * bouncePower/3;
         } 
     }
 
