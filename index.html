@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=VT323">
+    <title>Unity WebGL Player | Platformer</title>
+    <style>
+      html,
+      body {
+        background-color: black;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: clip;
+      }
+      .canvas-overlay {
+        position: absolute;
+        top: 5px;
+        left: 20px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .canvas-overlay p {
+        color: white;
+        font-size: 18px;
+        font-family: "VT323", sans-serif;
+        display: block;
+        margin: 5px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="unity-canvas" width="800" height="600"></canvas>
+    <div class="canvas-overlay">
+      <p>Arrow Keys - Move</p>
+      <p>C - Jump</p>
+      <p>X - Bomb</p>
+      <p>R - Reset</p>
+    </div>
+  </body>
+    <script src="Build/Web Build.loader.js"></script>
+    <script>
+      var canvas = document.querySelector("#unity-canvas");
+      // canvas.style.width = "100%";
+      // canvas.style.height = "100%";
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      canvas.style.position = "fixed";
+
+      document.body.style.textAlign = "left";
+
+      createUnityInstance(document.querySelector("#unity-canvas"), {
+        dataUrl: "Build/Web Build.data",
+        frameworkUrl: "Build/Web Build.framework.js",
+        codeUrl: "Build/Web Build.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "DefaultCompany",
+        productName: "Platformer",
+        productVersion: "0.1",
+        // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
+        // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
+      });
+    </script>
+  </body>
+</html>
