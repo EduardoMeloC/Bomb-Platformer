@@ -3,11 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=VT323">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <title>Bomb Platformer</title>
     <style>
-      html,
-      body {
+      html, body {
         background-color: black;
         width: 100%;
         height: 100%;
@@ -16,34 +15,32 @@
         align-items: center;
         overflow: clip;
       }
-      .canvas-overlay {
-        position: absolute;
-        top: 5px;
+      .instructions {
+        position: fixed;
+        top: 10px;
         left: 20px;
-        width: 100%;
-        height: 100%;
         display: flex;
         flex-direction: column;
+        pointer-events: none;
       }
-
-      .canvas-overlay p {
+      .instructions p {
         color: white;
         font-size: 18px;
-        font-family: "VT323", sans-serif;
+        font-family: "VT323", monospace !important;
         display: block;
         margin: 5px 0;
       }
     </style>
   </head>
   <body>
-    <div class="canvas-overlay">
+    <canvas id="unity-canvas" width=800 height=600 tabindex="-1" style="width: 800px; height: 600px; background: #231F20"></canvas>
+    <div class="instructions">
       <p>Arrow Keys - Move</p>
       <p>C - Jump</p>
       <p>X - Bomb</p>
       <p>R - Reset</p>
     </div>
-    <canvas id="unity-canvas" width=800 height=600 tabindex="-1" style="width: 800px; height: 600px; background: #231F20"></canvas>
-    <script src="Build/Web.loader.js"></script>
+    <script src="Build/WebBuild.loader.js"></script>
     <script>
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         // Mobile device style: fill the whole browser client area with the game canvas:
@@ -63,9 +60,9 @@
 
       createUnityInstance(document.querySelector("#unity-canvas"), {
         arguments: [],
-        dataUrl: "Build/Web.data",
-        frameworkUrl: "Build/Web.framework.js",
-        codeUrl: "Build/Web.wasm",
+        dataUrl: "Build/WebBuild.data",
+        frameworkUrl: "Build/WebBuild.framework.js",
+        codeUrl: "Build/WebBuild.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "Platformer",
